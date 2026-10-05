@@ -1,0 +1,33 @@
+# secrets
+*.env
+
+# environments and dependencies
+node_modules/
+.venv-cuda/
+__pycache__/
+*.pyc
+tools/
+
+# models, data and generated artifacts (large or not redistributable: base model, game text,
+# wiki crawl, teacher outputs, checkpoints, exported Lua tables, built levels)
+models/
+data/
+ckpt/
+build/
+game/build/
+game/out/
+
+# run logs and evaluation reports (summary: docs/results.md)
+logs/
+reports/
+*.log
+
+# cover art (the Paimon sticker is game art; render with game/cover/render.mjs)
+game/cover/*.png
+game/cover/*.jpg
+
+# local scratch
+.attic/
+
+# browser profiles from headless rendering
+.browser-profile/
