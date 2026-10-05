@@ -34,6 +34,7 @@ O=ckpt/paimon-s$SEED-26m
 $PY distill/probe_suite.py $O-q4
 python export/export_lua.py --ckpt $O-q4 --out build
 node lua/test.mjs && node lua/draft_test.mjs
+$PY distill/known_entries.py $O-q4                                      # entries the model knows: no retrieval
 python game/make_ime.py && $PY game/embed/train_filter.py && python game/make_lore.py
 LORE=1 node game/build.mjs --full
 node game/test.mjs && node game/filter_test.mjs

@@ -387,7 +387,10 @@ local function ask(q)
   scroll = 0
   turn = { q = q, id = id, t0 = clock, chars = 0, raw = {} }
   local cat = classify(q)
-  if not cat then turn.lore = lookup(q); turn.lookup = turn.lore ~= nil end
+  -- suggestion-menu questions are cached with their first-step logits: no retrieval for them
+  local preset = false
+  for _, s in ipairs(SUGGEST) do if s == q then preset = true; break end end
+  if not cat and not preset then turn.lore = lookup(q); turn.lookup = turn.lore ~= nil end
   if cat then gen = streamText(F.refuse[cat] ~= '' and F.refuse[cat] or REFUSE_DEFAULT); turn.src = 'filter'; turn.cat = cat
   elseif ready() then startModel(q)
   elseif loadFailed then gen = streamText('唔…派蒙好像醒不过来了，重新进入奇域试试吧。'); turn.src = 'filter'

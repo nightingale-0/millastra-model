@@ -21,6 +21,8 @@ Guidance for coding agents working in this repo. Project overview: README.md; le
 - eval300 no longer separates candidates; decide on `distill/probe_suite.py` categories (it runs
   candidates with retrieval like the game), plus the hedging rate in bench/r9_summary.py.
 - Retrain with 2-3 seeds (`train/sft.py --seed`); one seed can differ by ~0.15 from another.
+- After changing the shipped model, rerun `distill/known_entries.py <ckpt>` and `game/make_lore.py`:
+  retrieval must skip entries the model already knows (a snippet pulls it off its own right answer).
 
 ## Data hygiene
 

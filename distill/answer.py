@@ -5,9 +5,11 @@
 import argparse, json, os, sys, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "data_prep"))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "ref"))
 from paimon import SYSTEM
-from paimon_eval import PROMPTS
+# fixed player prompts, first in every report
+PROMPTS = ["你是谁？", "派蒙，我们今天去哪儿？", "你饿了吗？", "给我讲个笑话吧。", "蒙德有什么好吃的？",
+           "你觉得我这个人怎么样？", "应急食品是什么意思？", "这里是千星奇域，你来过吗？", "璃月的神是谁？",
+           "你会飞吗？", "我想休息一下。", "中国的首都是哪里？"]
 from transformers import LogitsProcessor, LogitsProcessorList
 
 class GenOnlyRepetitionPenalty(LogitsProcessor):

@@ -19,6 +19,13 @@ SRC = "data/distill/lore_rag.jsonl"
 OUT = os.path.join(os.path.dirname(__file__), "build", "lore.lua")
 ENTRIES = "data/lore/entries.jsonl"
 COMMON_MAX = 20          # a name seen more often than this in general questions is an ordinary word
+# the seven nations: the model knows them, and their snippets are generic ("璃月：…富饶港湾"), so
+# "璃月的神是谁" got a description of Liyue instead of the answer; new regions (挪德卡莱) stay
+KNOWN = {"蒙德", "璃月", "稻妻", "须弥", "枫丹", "纳塔", "至冬"}
+# entries the shipped model already answers right without a snippet (distill/known_entries.py): the
+# snippet only pulls it off ("钟离的真实身份" -> "往生堂客卿" instead of 岩神摩拉克斯)
+KNOWN_FILE = "data/lore/known.json"
+if os.path.exists(KNOWN_FILE): KNOWN |= set(json.load(open(KNOWN_FILE, encoding="utf-8"))["known"])
 
 def lookup_keys(rows, where, common=lambda k: False, skipped=None):
     """[(entry text "名字：snippet", normalized trigger keys)], names before aliases. An alias is dropped
@@ -31,6 +38,7 @@ def lookup_keys(rows, where, common=lambda k: False, skipped=None):
     out, taken = [], set()
     for r in rows:
         name = r["name"].strip("「」")
+        if name in KNOWN or r["name"] in KNOWN: skipped["known"] += 1; continue
         names = {name}
         for n in ([] if kinds.get(r["name"]) == "地区" else r["aliases"]):
             k = norm_text(n)

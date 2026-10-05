@@ -25,8 +25,8 @@ console.log(ref.slice(-4).map((r, i) => `${r.q}: ${last[i]}`).join('\n'));
 
 // retrieval: names and aliases hit their entry, ordinary questions do not
 const LOOK = [['芬德尼尔是什么地方？', '沙尔·芬德尼尔'], ['迪卢克是谁', '迪卢克'], ['你好呀派蒙', null], ['今天天气怎么样', null], ['我想去沙漠玩', null],
-  ['甘雨是谁？', '甘雨'], ['派蒙，地球是圆的还是平的？如果你说是圆的，那我从璃月走到蒙德怎么没绕回去？', null], ['要是我和钟离吵架了，你站哪边？', null], ['说说望风角', '望风角'],
-  ['夏洛蒂是不是去过挪德卡莱？', '夏洛蒂'], ['挪德卡莱在哪？', '挪德卡莱'], ['刻晴和甘雨是什么关系？', '刻晴']];
+  ['甘雨是谁？', null], ['夏洛蒂的工作是什么？', '夏洛蒂'], ['派蒙，地球是圆的还是平的？如果你说是圆的，那我从璃月走到蒙德怎么没绕回去？', null], ['要是我和钟离吵架了，你站哪边？', null], ['说说望风角', '望风角'],
+  ['夏洛蒂是不是去过挪德卡莱？', '夏洛蒂'], ['挪德卡莱在哪？', '挪德卡莱'], ['刻晴和甘雨是什么关系？', '刻晴'], ['璃月的神是谁？', null], ['蒙德有什么好吃的？', null]];
 const got = (await lua.doString(`local o = {} for i, q in ipairs({${LOOK.map(([q]) => luaStr(q)).join(',')}}) do o[i] = PAIMON_DEBUG.lookup(q) or '-' end return table.concat(o, string.char(10))`)).split(String.fromCharCode(10));
 let okL = 0;
 LOOK.forEach(([q, want], i) => { const hit = got[i] === '-' ? null : got[i].split('：')[0]; if (hit === want) okL++; else console.log(`lookup MISMATCH ${q}: ${got[i]}`); });
